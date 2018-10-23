@@ -8,7 +8,7 @@ export default class Login extends Component {
             <div className='login-container'>
                 <div>
                     <h1>Enter a username</h1>
-                    <input name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
+                    <input onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
                     <button onClick={submitUsername}>Start</button>
                 </div>
             </div>

@@ -10,12 +10,13 @@
         width: 300px;
         min-height: 150px;
         display: flex;
+        border-top: rgb(185, 185, 185) solid 1px;
         justify-content: space-between;
         border-radius: 3px;
         align-items: center;
         flex-direction: column;
-        background: white;
-        box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.383);
+        background: rgb(245, 245, 245);
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.383);
 
         input {
             width: 90%;
@@ -40,11 +41,11 @@
             height: 30px;
             width: 80px;
             border: none;
-            background: linear-gradient(0deg,rgb(117, 163, 224), rgb(77, 161, 209));
+            background: linear-gradient(0deg,#52CAB6, #52CAB6);
             color: white;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 3px;
+            border-radius: 2px;
             cursor: pointer;
             box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.383);
         }

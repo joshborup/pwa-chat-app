@@ -73,5 +73,31 @@
 }
 
 .main-room-container {
-    
+
+    .messages-container {
+        height: calc(100vh - 70px);
+        width: calc(100vw - 330px);
+        background: pink;
+
+        @media (max-width:991px) {
+            width: 100vw;
+        }
+    }
+
+    .input-containers {
+        width: 100%;
+        height: 70px;
+        display: flex;
+        background: green;
+        justify-content: center;
+        
+        input {
+            flex: 1;
+            font-size: 20px;
+        }
+        button {
+            width: 130px;
+            font-size: 20px;
+        }
+    }
 }
