@@ -17,19 +17,24 @@ class ChatContainer extends Component {
             messages: [],
             id:null
         }
-        socket.emit('join', {username: props.username, room: props.location.pathname.replace(/\//ig,'').toLowerCase()})
+        socket.emit('join', {username: props.username, room: this.props.room.toLowerCase() || props.location.pathname.replace(/\//ig,'').toLowerCase()})
+
+        socket.on('user_id', (id) => {
+            console.log(id)
+            this.setState({
+                id: id
+            })
+        })
 
         socket.on('joined', (joined) => {
-            console.log('joined==================', joined)
             this.setState({
                 room: joined.room,
-                id: joined.id,
                 userList: joined.userList,
             })
         })
 
         socket.on('userlist', (userList) => {
-            console.log(userList)
+            console.log('asdfsfadsfadsfadsfadfadsfadsfasdfadsfa',userList)
             this.setState({
                 userList: userList,
             })
@@ -43,13 +48,22 @@ class ChatContainer extends Component {
     }
 
     componentDidMount(){
+
+    //     window.onbeforeunload = function(event)
+    // {
+    //     return confirm("Confirm refresh");
+    // };
         window.addEventListener("beforeunload", (event) => {
-            socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
             // Cancel the event as stated by the standard.
-            event.preventDefault();
-            // Chrome requires returnValue to be set.
-            event.returnValue = 'Left room';
+            // event.preventDefault();
+            socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
+            // // Chrome requires returnValue to be set.
+            // event.returnValue = 'Left room';
         });
+    }
+
+    componentWillUnmount(){
+        socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
     }
 
     changeHandler = (name, value) => {
@@ -76,7 +90,7 @@ class ChatContainer extends Component {
     }
 
     render() {
-        console.log(this.props.location.pathname.replace(/\//ig,'').toLowerCase())
+        console.log(this.props)
         return (
             <div className='chat-container'>
                 <div>

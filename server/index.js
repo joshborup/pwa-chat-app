@@ -3,46 +3,33 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
+const lib = require('./lib/SocketFunctions');
 
 app.use(bodyParser.json());
 
 app.use( express.static( `${__dirname}/../build` ) );
 
-let users = [];
-let id = 0;
+const myLib = new lib;
 
 io.sockets.on('connection', (socket) => {
-    console.log('user connected')
-
     socket.on('join', (join) => {
-
-        users.push({room: join.room, id: id, username: join.username})
-        socket.join(join.room)
-        let userList = users.filter((user)=>{
-            return user.room == join.room
-        })
-        io.in(join.room).emit('joined', {room: join.room, id: id, username: join.username, userList: userList})
-        id++
+        let joined = myLib.addUser(join)
+        socket.join(joined.room)
+        io.in(joined.room).emit("joined", {room: joined.room, id: joined.id, username: joined.username, userList: joined.userList})
+        console.log('after join',joined.userList);
+        io.to(socket.id).emit('user_id', joined.id);
+        io.in(joined.room).emit('userlist', joined.userList);
     })
 
     socket.on('message', (message) => {
-        console.log(message)
-        io.in(message.room).emit('message', message)
+        myLib.sendMessage(io, message)
     })
 
-    socket.on('left', (left) => {
-        const myUsers = users.filter(user => {
-            return user.id !== left.id
-        })
-        console.log('myusers', myUsers)
-        users = myUsers;
-
-        let userList = myUsers.filter((user)=>{
-            return user.room === left.room
-        })
-        console.log('left the room', userList)
+    socket.on('left', (leave) => {
+        let left = myLib.removeUser(leave);
+        console.log('after left',left.userList);
+        io.in(left.room).emit('userlist', left.userList)
         
-        io.in(left.room).emit('userlist', userList)
     })
 
     socket.on('disconnect', () => {

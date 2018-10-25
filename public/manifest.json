@@ -1,8 +1,8 @@
 {
-  "name": "Chat It Up",
-  "short_name": "Chat It Up",
-  "theme_color": "#000000",
-  "background_color": "#dcdcdc",
+  "name": "Just Chat",
+  "short_name": "Just Chat",
+  "theme_color": "#2196f3",
+  "background_color": "#2196f3",
   "display": "standalone",
   "Scope": "/",
   "start_url": "/",

@@ -14,7 +14,6 @@
         }
 
         .sidebar-container {
-            background: purple;
             height: 100%;
             width: 330px;
         }
@@ -26,6 +25,7 @@
                 top: 0;
                 right: 0;
                 transition: .3s;
+                z-index: 1;
             }
 
             .hide {
@@ -57,27 +57,132 @@
         .main-room-container {
             flex: 1;
             height: 100%;
-            background: blue;
         }
     }
 }
 
 .sidebar-container {
+    background: $main-color;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.452);
+
+    .leave-room-button {
+        margin: 10px 0;
+        height: 35px;
+        width: 100%;
+        background: rgb(194, 238, 238);
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+        color: rgb(44, 44, 44);
+        box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.452);
+        cursor: pointer;
+    }
+
+    .userslist-container{
+        padding: 10px;
+        
+        .user-card {
+            width: 100%;
+            background-color: white;
+            height: 40px;
+            display: flex;
+            font-weight: 700;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3px;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.452);
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        > *+* {
+            margin: 10px 0;
+        }
+    }
     h1 {
-        text-shadow: .5px .5px 1px black;
-        height:75px;
+        height:40px;
         display: flex;
         justify-content: center;
         align-items: center;
+        background: white;
+        font-size: 32px;
+        font-family: 'Chakra Petch', sans-serif;
     }
+    
 }
-
 .main-room-container {
-
     .messages-container {
-        height: calc(100vh - 70px);
+        height: calc(100vh - 60px);
         width: calc(100vw - 330px);
-        background: pink;
+        overflow-y: scroll;
+        padding:10px;
+
+        .spacer {
+            height: 50px;
+        }
+
+        .message {
+            width: 80%;
+            min-height: 40px;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 5px;
+            border-radius: 3px;
+            background-color: white;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.253);
+            animation: flyin .3s ease-in-out 0s 1 forwards;
+
+            @keyframes flyin {
+                from {
+                    transform: translate(-100vw, 0px);
+                }
+                to {
+                    transform: translate(0, 0px);
+                }
+            }
+
+
+            .message-username {
+                font-family: 'Chakra Petch', sans-serif;
+                justify-self: flex-start;
+                font-weight: 700;
+                width: 100%;
+                padding: 0px 5px 2px 0;
+                border-bottom: 1px solid rgb(211, 211, 211);
+                margin-bottom: 7px;
+                
+                span {
+                    font-weight: 400;
+                    font-size: 12px;
+                }
+            }
+
+            .message-content {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                height: 100%;
+                word-break: break-all;
+                justify-self: center;
+                font-family: 'Raleway', sans-serif;
+            }
+
+            @media (max-width:991px) {
+                width: 100%;
+            }
+        }
+
+
+        //for message spacing rather (no real reason just messing around)
+        >div:first-child {
+            margin: 0 auto 10px;
+            
+        }
+
+        > * + * {
+            margin: 10px auto;
+            
+        }
 
         @media (max-width:991px) {
             width: 100vw;
@@ -86,18 +191,23 @@
 
     .input-containers {
         width: 100%;
-        height: 70px;
+        height: 60px;
         display: flex;
         background: green;
         justify-content: center;
-        
+        border-top: 1px solid rgb(104, 103, 103);
+        input, button {
+            border: none;
+        }
         input {
             flex: 1;
             font-size: 20px;
+            padding-left: 5px;
         }
         button {
             width: 130px;
             font-size: 20px;
+            cursor: pointer;
         }
     }
 }

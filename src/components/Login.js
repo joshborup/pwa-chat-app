@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 export default class Login extends Component {
     render() {
         console.log(this.props);
-        const {universalChangeHandler, username, submitUsername} = this.props;
+        const {universalChangeHandler, username, submitUsername, room} = this.props;
         return (
             <div className='login-container'>
                 <div>
                     <h1>Enter a username</h1>
-                    <input onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
+                    <input autoFocus={true} onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
+                    <input onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="room" placeholder="room" onChange={(e)=> universalChangeHandler(e)} value={room} />
                     <button onClick={submitUsername}>Start</button>
                 </div>
             </div>
