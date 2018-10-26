@@ -2,7 +2,7 @@
   "name": "pwa-chat",
   "version": "0.1.0",
   "main": "server/",
-  "proxy": "http://localhost:4000",
+  "proxy": "http://localhost:4001",
   "private": true,
   "dependencies": {
     "body-parser": "^1.18.3",

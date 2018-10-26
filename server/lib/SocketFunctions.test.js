@@ -29,7 +29,7 @@ describe("Unit Tests",()=> {
                         }
                     }
                 }
-            return socketFunctions.addUser(io, socket, join, users, id)
+            return socketFunctions.addUser(io, socket, join)
         })
         it("should remove user from list by id", () => {
             const users = [{id: 0, room: "cool", username: "joshborup"}]
