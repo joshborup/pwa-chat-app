@@ -2,7 +2,7 @@
   "name": "Just Chat",
   "short_name": "Just Chat",
   "theme_color": "#2196f3",
-  "background_color": "#2196f3",
+  "background_color": "#e2e2e2",
   "display": "standalone",
   "Scope": "/",
   "start_url": "/",
