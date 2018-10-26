@@ -10,7 +10,6 @@
         font-size: 24px;
         justify-self: flex-start;
         width: 100%;
-        background:  rgb(211, 211, 211);
         color: rgb(48, 47, 47);
         font-weight: 400;
         text-align: center;
@@ -23,18 +22,15 @@
         width: 300px;
         min-height: 200px;
         display: flex;
-        border-top: rgb(185, 185, 185) solid 1px;
         justify-content: space-between;
         border-radius: 3px;
         align-items: center;
         flex-direction: column;
-        background: rgb(245, 245, 245);
-        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.383);
 
         input {
             width: 90%;
             height: 40px;
-            background-color: rgb(235, 235, 235);
+            background-color: rgb(243, 243, 243);
             border-top-right-radius: 3px;
             border-top-left-radius: 3px;
             border: none;
@@ -54,15 +50,54 @@
             height: 30px;
             width: 80px;
             border: none;
-            background:  rgb(211, 211, 211);
+            background:  rgb(243, 241, 241);
             color: rgb(68, 68, 68);
             // color: #fff;
             // text-shadow: .5px .5px 1px rgb(0, 0, 0);
             font-size: 16px;
             font-weight: 600;
-            border-radius: 2px;
+            border-radius: 20px;
             cursor: pointer;
             box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.514);
+
+            span:nth-child(1){
+                color: red;
+            }
+            span:nth-child(2){
+                color: blue
+            }
+            span:nth-child(3){
+                color: green;
+            }
+            span:nth-child(4){
+                color: rgb(250, 146, 164);
+            }
+            span:nth-child(5){
+                color: rgb(209, 35, 209);
+            }
+
+            
+        }
+        button:hover {
+            background: rgb(236, 236, 236);
+        }
+
+        button:hover {
+            span:nth-child(1){
+                color: rgb(131, 35, 209);
+            }
+            span:nth-child(2){
+                color: pink;
+            }
+            span:nth-child(3){
+                color: rgb(34, 250, 250);
+            }
+            span:nth-child(4){
+                color: blue;
+            }
+            span:nth-child(5){
+                color: rgb(255, 0, 221);
+            }
         }
     }
 }
