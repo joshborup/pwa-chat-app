@@ -32,25 +32,83 @@
                 transform: translate(-330px, 0px);
             }
 
-            .hamburger {
+
+            .toggle {
                 display: flex;
-                position: fixed;
-                justify-content: center;
+                justify-content: space-around;
                 align-items: center;
-                border: none;
-                font-size: 50px;
-                top: 15px;
+                text-align: center;
+                flex-direction: column;
+                width:50px;
+                height: 35px;
+                background: rgb(223, 223, 223);
+                box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.411);
+                position: fixed;
+                top: 24px;
                 right: 20px;
+                padding: 6px 9px;
                 z-index: 10;
-                height: 50px;
-                width: 50px;
                 cursor: pointer;
-                border-radius: 50%;
-                box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.411);
-                span {
-                    position: relative;
-                    bottom: 9px;
-                }
+                overflow: hidden;
+                background: white;
+                border-radius: 12px;
+            }
+            .toggle > div {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            height: 100%;
+            transition: .3s;
+            }
+        
+            .bar {
+            overflow: hidden;
+            transform: translate(0,0);
+            border-bottom: solid 2px black;
+            display: block;
+            width: 25px;
+            transition: .3s;
+            position: relative;
+            }
+        
+            .toggle > div.opens {
+            transform: rotate(180deg);
+            }
+        
+            .toggle > div.closes {
+            transform: rotate(0deg);
+            }
+        
+            .bar.open.one {
+            transform: rotate(180deg);
+            }
+        
+            .bar.open.two {
+            margin: 3px 0;
+            }
+        
+            .bar.open.three {
+            transform: rotate(0deg)
+            }
+        
+            .bar.close.one {
+            transform: rotate(145deg) translate(7px, 1px) scaleX(.5);
+            border-color: rgb(0, 17, 255);
+        
+            z-index: 3;
+            }
+        
+            .bar.close.two {
+            border-color: rgb(255, 0, 200);
+            z-index: 4;
+            }
+        
+            .bar.close.three {
+            transform: rotate(-145deg) translate(7px, 0px)  scaleX(.5);
+            border-color: rgb(255, 115, 0);
+            z-index: 3;
             }
         }
 
@@ -69,7 +127,7 @@
         margin: 10px 0;
         height: 35px;
         width: 100%;
-        background: rgb(194, 238, 238);
+        background: linear-gradient(90deg, rgb(255, 254, 195),rgb(195, 255, 225));
         border: none;
         font-size: 16px;
         font-weight: 700;

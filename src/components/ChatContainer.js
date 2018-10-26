@@ -89,12 +89,29 @@ class ChatContainer extends Component {
         })
     }
 
+    toggleFunc = () => {
+        this.setState((prevState) => {
+            return {
+                toggle: !prevState.toggle
+            }
+        })
+    }
+    
+    
+
     render() {
         console.log(this.props)
         return (
             <div className='chat-container'>
                 <div>
-                    <button className='hamburger' onClick={this.mobileToggle}>{this.state.toggle ? <span>-</span>: <span>+</span>}</button>
+                    {/* <button className='hamburger' onClick={this.mobileToggle}>{this.state.toggle ? <span>-</span>: <span>+</span>}</button> */}
+                    <div onClick={this.toggleFunc} className={this.state.toggle ? 'toggle' : 'toggle showham'}>
+                        <div className={this.state.toggle ? 'closes' : 'opens'}>
+                            <span className={this.state.toggle ? 'bar close one' : 'bar open one'}></span>
+                            <span className={this.state.toggle ? 'bar close two' : 'bar open two'}></span>
+                            <span className={this.state.toggle ? 'bar close three' : 'bar open three'}></span>
+                        </div>
+                    </div>
                     <SideBar toggle={this.state.toggle} mobileToggle={this.mobileToggle} {...this.props} {...this.state} />
                     <ChatRoom changeHandler={this.changeHandler} sendMessage={this.sendMessage} {...this.state} {...this.props} />
                 </div>
