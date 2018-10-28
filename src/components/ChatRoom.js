@@ -12,7 +12,7 @@ const ChatRoom = (props) => {
 
     const chatMessages = messages.map((user) => {
         return <div className='message'>
-                    <div className='message-username'>{user.username} <span>-{user.timestamp}</span></div>
+                    <div key={user.username + user.timestamp} className='message-username'>{user.username} <span>-{user.timestamp}</span></div>
                     <div className='message-content'>{' ' + user.message}</div>
                 </div>
     })
@@ -23,10 +23,13 @@ const ChatRoom = (props) => {
                 <div className='spacer' ref={messagesEnd}></div>
             </div>
             <div className='input-containers'>
-                <input autoFocus={true} onKeyPress={(e)=> {if(e.key === "Enter") sendMessage(); scrollToBottom();}} name="message" onChange={(e) => props.changeHandler(e.target.name, e.target.value)} value={message}/>
+                <input autoFocus={true} onKeyPress={(e)=> {if(e.key === "Enter" && message) sendMessage(); scrollToBottom();}} name="message" onChange={(e) => props.changeHandler(e.target.name, e.target.value)} value={message}/>
                 <button  onClick={() => {
-                    sendMessage()
-                    scrollToBottom()
+                    console.log('dfgdfgsdfgsdfg',message)
+                    if(message){
+                        sendMessage()
+                        scrollToBottom()
+                    }
                     }}>Send</button>
             </div>
         </div>

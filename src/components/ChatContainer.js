@@ -20,7 +20,6 @@ class ChatContainer extends Component {
         socket.emit('join', {username: props.username, room: this.props.room.toLowerCase() || props.location.pathname.replace(/\//ig,'').toLowerCase()})
 
         socket.on('user_id', (id) => {
-            console.log(id)
             this.setState({
                 id: id
             })
@@ -34,7 +33,6 @@ class ChatContainer extends Component {
         })
 
         socket.on('userlist', (userList) => {
-            console.log('asdfsfadsfadsfadsfadfadsfadsfasdfadsfa',userList)
             this.setState({
                 userList: userList,
             })
@@ -48,7 +46,8 @@ class ChatContainer extends Component {
     }
 
     componentDidMount(){
-
+            this.countdown = setInterval(this.reconnect, 10000);
+        
     //     window.onbeforeunload = function(event)
     // {
     //     return confirm("Confirm refresh");
@@ -63,7 +62,19 @@ class ChatContainer extends Component {
     }
 
     componentWillUnmount(){
+        clearInterval(this.countdown);
         socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
+    }
+
+    reconnect = () => {
+        if(socket.disconnected){
+            const reconnect = window.confirm("You have been disconnected, would you like to reconnect?");
+            if(reconnect){
+                socket.emit('join', {username: this.props.username, id: this.state.id, room: this.props.room.toLowerCase() || this.props.location.pathname.replace(/\//ig,'').toLowerCase()})
+            }else{
+                this.props.history.push('/')
+            }
+        }
     }
 
     changeHandler = (name, value) => {
@@ -81,12 +92,14 @@ class ChatContainer extends Component {
     }
 
     sendMessage = () => {
-        this.setState(() => {
-            socket.emit('message', {id: this.state.id, room: this.state.room, username: this.state.username, message: this.state.message})
-            return {
-                message: ''
-            }
-        })
+        if(this.state.message){
+            this.setState(() => {
+                socket.emit('message', {id: this.state.id, room: this.state.room, username: this.state.username, message: this.state.message})
+                return {
+                    message: ''
+                }
+            })
+        }
     }
 
     toggleFunc = () => {
@@ -100,7 +113,6 @@ class ChatContainer extends Component {
     
 
     render() {
-        console.log(this.props)
         return (
             <div className='chat-container'>
                 <div>

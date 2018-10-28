@@ -3,10 +3,9 @@ import React from 'react';
 const SideBar = (props) => {
     const { userList, username } = props;
 
-    console.log(userList)
 
     const myUsersList = userList.map((user)=>{
-                return <div className="user-card">{user.username}</div>
+                return <div key={user.id} className="user-card">{user.username}</div>
     })
     return (
         <div className={props.toggle ? 'sidebar-container' : 'sidebar-container hide'}>

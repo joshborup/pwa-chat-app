@@ -14,9 +14,9 @@ class App extends Component {
     }
   }
 
+
   componentDidMount(){
       let deferredPrompt;
-  
       window.addEventListener('beforeinstallprompt', (e) => {
         // Prevent Chrome 67 and earlier from automatically showing the prompt
         e.preventDefault();
@@ -36,6 +36,8 @@ class App extends Component {
           });
       });
   }
+
+  
   
   universalChangeHandler = (event) => {
     this.setState({
@@ -51,12 +53,30 @@ class App extends Component {
     }
   }
 
+  //put desktop in fullscreenmode
+  // toggleFullScreen = () => {
+  //   var doc = window.document;
+  //   var docEl = doc.documentElement;
+  
+  //   var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  //   var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+  
+  //   if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+  //     requestFullScreen.call(docEl);
+  //   }
+  //   else {
+  //     cancelFullScreen.call(doc);
+  //   }
+  // }
+
   render() {
-    console.log(this.props)
+
+    
+
     return (
       <div className="App">
         <header className="App-header">
-          
+
         </header>
         <Switch>
           <Route path="/chat-room" render={() => {

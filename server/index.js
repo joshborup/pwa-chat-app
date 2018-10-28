@@ -22,7 +22,9 @@ io.sockets.on('connection', (socket) => {
     })
 
     socket.on('message', (message) => {
-        myLib.sendMessage(io, message)
+        if(message.message){
+            myLib.sendMessage(io, message)
+        }
     })
 
     socket.on('left', (leave) => {

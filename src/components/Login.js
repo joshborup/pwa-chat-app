@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 export default class Login extends Component {
     render() {
-        console.log(this.props);
         const {universalChangeHandler, username, submitUsername, room} = this.props;
         return (
             <div className='login-container'>
