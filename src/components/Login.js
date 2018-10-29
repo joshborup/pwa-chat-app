@@ -39,8 +39,9 @@ export default class Login extends PureComponent {
         return (
             <div className='login-container'>
                 <img src={logo} /> 
+                <h1>Just Chat</h1>
                 <div>
-                    <h1>Enter a username</h1>
+                    <h2>Enter Username</h2>
                     <input autoFocus={true} onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
                     <div>
                         <input onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="room" placeholder="room" onChange={(e)=> {
