@@ -10,31 +10,55 @@ class App extends Component {
     super()
     this.state = {
       userNameSelection: '',
-      username: ''
+      username: '',
+      room: '',
+      savedRoom: null
     }
   }
 
 
   componentDidMount(){
-      let deferredPrompt;
-      window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent Chrome 67 and earlier from automatically showing the prompt
-        e.preventDefault();
-        // Stash the event so it can be triggered later.
-        deferredPrompt = e;
-        // Update UI notify the user they can add to home screen
-        deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice
-          .then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('User accepted the A2HS prompt');
-            } else {
-              console.log('User dismissed the A2HS prompt');
-            }
-            deferredPrompt = null;
-          });
-      });
+
+    let savedRoom = JSON.parse(localStorage.getItem('room')) || this.state.room;
+    if(savedRoom){
+      this.setState({
+        room: savedRoom.room,
+        remember: savedRoom.remember
+      })
+    }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Update UI notify the user they can add to home screen
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice
+        .then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
+        });
+    });
+  }
+
+  rememberRoom = () => {
+    localStorage.clear();
+    localStorage.setItem('room', JSON.stringify({room: this.state.room, remember:true}))
+    this.setState({
+      remember:true
+    })
+  }
+  clearStateRemember = () => {
+    this.setState({
+      remember: false
+    })
   }
 
   
@@ -71,7 +95,7 @@ class App extends Component {
 
   render() {
 
-    
+    console.log('remember teat',this.state.remember)
 
     return (
       <div className="App">
@@ -83,11 +107,11 @@ class App extends Component {
             return this.state.username ? <ChatContainer room={this.state.room} username={this.state.username} /> : <Redirect to="/" />;
           }} />
           <Route exact path="/" render={() => {
-            return <Login submitUsername={this.submitUsername} username={this.state.userNameSelection} universalChangeHandler={this.universalChangeHandler} />
+            return <Login clearStateRemember={this.clearStateRemember} remember={this.state.remember} rememberRoom={this.rememberRoom} room={this.state.room} submitUsername={this.submitUsername} username={this.state.userNameSelection} universalChangeHandler={this.universalChangeHandler} />
           }}/>
 
           <Route path="*" render={() => {
-            return <Login submitUsername={this.submitUsername} username={this.state.userNameSelection} universalChangeHandler={this.universalChangeHandler} />
+            return <Login clearStateRemember={this.clearStateRemember} remember={this.state.remember} rememberRoom={this.rememberRoom} room={this.state.room} submitUsername={this.submitUsername} username={this.state.userNameSelection} universalChangeHandler={this.universalChangeHandler} />
           }}/>
 
         </Switch>

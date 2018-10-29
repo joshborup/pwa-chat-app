@@ -27,6 +27,24 @@
         align-items: center;
         flex-direction: column;
 
+
+        > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 270px;
+            input {
+                max-width: 196px;
+            }
+
+            >label {
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
         input {
             width: 90%;
             height: 40px;

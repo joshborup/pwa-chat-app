@@ -16,38 +16,41 @@ module.exports = class {
             console.log('diff(ids, tempIds)', diff(ids, tempIds))
 
             let idsNeedsRemoved = diff(ids, tempIds);
+            if(idsNeedsRemoved.length){
+                console.log('idsNeedsRemoved', idsNeedsRemoved)
+    
+                let indexesNeedsRemoved = idsNeedsRemoved.map((id) => {
+                        return this.users.findIndex(user => {
+                            return user.id === id 
+                        })
+                })
+    
+                console.log('indexesNeedsRemoved',indexesNeedsRemoved);
+    
+                indexesNeedsRemoved.map(index => {
+                    this.users.splice(index, 1);
+                })
 
-            console.log('idsNeedsRemoved', idsNeedsRemoved)
-
-            let indexesNeedsRemoved = idsNeedsRemoved.map((id) => {
-                    return this.users.findIndex(user => {
-                        return user.id === id 
-                    })
-            })
-
-            console.log('indexesNeedsRemoved',indexesNeedsRemoved);
-
-            indexesNeedsRemoved.map(index => {
-                this.users.splice(index, 1);
-            })
+            }
 
             // currentlyInList = this.state.user
             let idsToAdd = diff(tempIds, ids);
-
+            if(idsToAdd.length){
+                
+                this.tempUserList.map(user => {
+                    if(idsToAdd.includes(user.id)){
+                        this.users.push(user)
+                    }
+                })
+            }
             //not thorughly tested
-            this.tempUserList.map(user => {
-                if(idsToAdd.includes(user.id)){
-                    this.users.push(user)
-                }
-            })
 
-            console.log('diff opposoirte, ie user needs added to thw uswe list',)
             this.tempUserList = []
 
 
             // compare this.users with tempUserList by id and room name, if in this.users but not in tempUserList, they are no long connected and should be spliced out by index
             
-        }, 15000);
+        }, 4000);
 
 
         this.addUser = this.addUser.bind(this);
@@ -116,11 +119,4 @@ module.exports = class {
         message.timestamp = new Date().toLocaleTimeString();
         io.in(message.room).emit('message', message)
     }
-
-    
-
-    // testClear(){
-    //     users = [];
-    //     id = 0
-    // }
 }
