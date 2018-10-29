@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import logo from "./logo.png"
 
 export default class Login extends PureComponent {
     constructor(){
@@ -37,6 +38,7 @@ export default class Login extends PureComponent {
         console.log('in Lofgin',room)
         return (
             <div className='login-container'>
+                <img src={logo} /> 
                 <div>
                     <h1>Enter a username</h1>
                     <input autoFocus={true} onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
