@@ -12,6 +12,7 @@ app.use( express.static( `${__dirname}/../build` ) );
 const myLib = new lib;
 
 io.sockets.on('connection', (socket) => {
+
     socket.on('join', (join) => {
         let joined = myLib.addUser(join)
         socket.join(joined.room)
@@ -25,6 +26,10 @@ io.sockets.on('connection', (socket) => {
         if(message.message){
             myLib.sendMessage(io, message)
         }
+    })
+    socket.on('userlist-cleanup', (user) => {
+        
+        io.in(user.room).emit('userlist', myLib.userListCleanup(user))
     })
 
     socket.on('left', (leave) => {

@@ -47,6 +47,7 @@ class ChatContainer extends Component {
 
     componentDidMount(){
             this.countdown = setInterval(this.reconnect, 10000);
+            this.cleanup = setInterval(this.userListCleanup, 3500);
         
     //     window.onbeforeunload = function(event)
     // {
@@ -63,7 +64,13 @@ class ChatContainer extends Component {
 
     componentWillUnmount(){
         clearInterval(this.countdown);
+        clearInterval(this.cleanup)
         socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
+    }
+
+
+    userListCleanup = () => {
+        socket.emit('userlist-cleanup', {username: this.props.username, id: this.state.id, room: this.props.room.toLowerCase() || this.props.location.pathname.replace(/\//ig,'').toLowerCase()})        
     }
 
     reconnect = () => {
