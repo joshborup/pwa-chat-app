@@ -60,15 +60,11 @@ class App extends Component {
       remember: false
     })
   }
-
-  
-  
   universalChangeHandler = (event) => {
     this.setState({
       [event.target.name]:event.target.value
     })
   }
-
   submitUsername = () => {
     if(this.state.room && this.state.userNameSelection){
       this.setState({
@@ -78,20 +74,20 @@ class App extends Component {
   }
 
   //put desktop in fullscreenmode
-  // toggleFullScreen = () => {
-  //   var doc = window.document;
-  //   var docEl = doc.documentElement;
+  toggleFullScreen = () => {
+    var doc = window.document;
+    var docEl = doc.documentElement;
   
-  //   var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-  //   var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
   
-  //   if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-  //     requestFullScreen.call(docEl);
-  //   }
-  //   else {
-  //     cancelFullScreen.call(doc);
-  //   }
-  // }
+    if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+      requestFullScreen.call(docEl);
+    }
+    else {
+      cancelFullScreen.call(doc);
+    }
+  }
 
   render() {
 
@@ -104,7 +100,7 @@ class App extends Component {
         </header>
         <Switch>
           <Route path="/chat-room" render={() => {
-            return this.state.username ? <ChatContainer room={this.state.room} username={this.state.username} /> : <Redirect to="/" />;
+            return this.state.username ? <ChatContainer toggleFullScreen={this.toggleFullScreen} room={this.state.room} username={this.state.username} /> : <Redirect to="/" />;
           }} />
           <Route exact path="/" render={() => {
             return <Login clearStateRemember={this.clearStateRemember} remember={this.state.remember} rememberRoom={this.rememberRoom} room={this.state.room} submitUsername={this.submitUsername} username={this.state.userNameSelection} universalChangeHandler={this.universalChangeHandler} />

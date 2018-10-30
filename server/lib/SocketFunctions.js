@@ -26,14 +26,10 @@ module.exports = class {
                 })
     
                 console.log('indexesNeedsRemoved',indexesNeedsRemoved);
-    
                 indexesNeedsRemoved.map(index => {
                     this.users.splice(index, 1);
                 })
-
             }
-
-            // currentlyInList = this.state.user
             let idsToAdd = diff(tempIds, ids);
             if(idsToAdd.length){
                 
@@ -43,16 +39,10 @@ module.exports = class {
                     }
                 })
             }
-            //not thorughly tested
-
             this.tempUserList = []
-
-
-            // compare this.users with tempUserList by id and room name, if in this.users but not in tempUserList, they are no long connected and should be spliced out by index
-            
         }, 4000);
 
-
+        
         this.addUser = this.addUser.bind(this);
         this.userListCleanup = this.userListCleanup.bind(this);
         this.removeUser = this.removeUser.bind(this);
@@ -116,7 +106,7 @@ module.exports = class {
         return left
     }
     sendMessage(io, message){
-        message.timestamp = new Date().toLocaleTimeString();
+        message.timestamp = new Date();
         io.in(message.room).emit('message', message)
     }
 }

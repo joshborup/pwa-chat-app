@@ -5,6 +5,7 @@ import SideBar from './SideBar';
 import {withRouter} from 'react-router-dom'
 const socket = socketIOClient();
 
+
 class ChatContainer extends Component {
     constructor(props){
         super(props)
@@ -47,7 +48,7 @@ class ChatContainer extends Component {
 
     componentDidMount(){
             this.countdown = setInterval(this.reconnect, 10000);
-            this.cleanup = setInterval(this.userListCleanup, 1500);
+            this.cleanup = setInterval(this.userListCleanup, 1000);
         
     //     window.onbeforeunload = function(event)
     // {
@@ -131,8 +132,10 @@ class ChatContainer extends Component {
                             <span className={this.state.toggle ? 'bar close three' : 'bar open three'}></span>
                         </div>
                     </div>
-                    <SideBar toggle={this.state.toggle} mobileToggle={this.mobileToggle} {...this.props} {...this.state} />
+                    <SideBar toggleFullScreen={this.props.toggleFullScreen} toggle={this.state.toggle} mobileToggle={this.mobileToggle} {...this.props} {...this.state} />
+                    
                     <ChatRoom changeHandler={this.changeHandler} sendMessage={this.sendMessage} {...this.state} {...this.props} />
+            
                 </div>
             </div>  
         );

@@ -15,6 +15,7 @@ io.sockets.on('connection', (socket) => {
 
     socket.on('join', (join) => {
         let joined = myLib.addUser(join)
+        console.log(joined)
         socket.join(joined.room)
         io.in(joined.room).emit("joined", {room: joined.room, id: joined.id, username: joined.username, userList: joined.userList})
         console.log('after join',joined.userList);
