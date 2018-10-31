@@ -25,7 +25,8 @@ io.sockets.on('connection', (socket) => {
 
     socket.on('message', (message) => {
         if(message.message){
-            myLib.sendMessage(io, message)
+            myLib.sendMessage(message)
+            io.in(message.room).emit('message', message)
         }
     })
     socket.on('userlist-cleanup', (user) => {

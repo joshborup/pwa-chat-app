@@ -105,8 +105,8 @@ module.exports = class {
         left.userList = userList
         return left
     }
-    sendMessage(io, message){
+    sendMessage(message){
         message.timestamp = new Date();
-        io.in(message.room).emit('message', message)
+        return message
     }
 }
