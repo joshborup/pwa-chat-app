@@ -38,11 +38,11 @@ export default class Login extends PureComponent {
         console.log('in Lofgin',room)
         return (
             <div className='login-container'>
-                <img src={logo} /> 
+                <img src={logo} alt='the just chat logo, two floating chat bubbles'/> 
                 <h1>Just Chat</h1>
                 <div>
                     <h2>Enter Username</h2>
-                    <input autoFocus={true} onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
+                    <input id="username" autoFocus={true} onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="userNameSelection" placeholder='Username' onChange={(e)=> universalChangeHandler(e)} value={username} />
                     <div>
                         <input onKeyPress={(e)=> {if(e.key === "Enter") submitUsername()}} name="room" placeholder="room" onChange={(e)=> {
                             localStorage.clear();

@@ -49,7 +49,6 @@ class ChatContainer extends Component {
     componentDidMount(){
             this.countdown = setInterval(this.reconnect, 10000);
             this.cleanup = setInterval(this.userListCleanup, 1000);
-        
     //     window.onbeforeunload = function(event)
     // {
     //     return confirm("Confirm refresh");
