@@ -23,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest --watch server/",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "coverage": "jest --watch server/ --env=jsdom --coverage"
   },
   "eslintConfig": {
     "extends": "react-app"

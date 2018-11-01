@@ -3,7 +3,7 @@ import socketIOClient from 'socket.io-client';
 import ChatRoom from './ChatRoom';
 import SideBar from './SideBar';
 import {withRouter} from 'react-router-dom'
-const socket = socketIOClient();
+let socket = socketIOClient();
 
 
 class ChatContainer extends Component {
@@ -54,11 +54,8 @@ class ChatContainer extends Component {
     //     return confirm("Confirm refresh");
     // };
         window.addEventListener("beforeunload", (event) => {
-            // Cancel the event as stated by the standard.
-            // event.preventDefault();
+            socket = socketIOClient();
             socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
-            // // Chrome requires returnValue to be set.
-            // event.returnValue = 'Left room';
         });
     }
 

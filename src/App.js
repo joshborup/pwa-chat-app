@@ -14,6 +14,7 @@ class App extends Component {
       room: '',
       savedRoom: null
     }
+
   }
 
 
@@ -28,6 +29,9 @@ class App extends Component {
     }
 
     let deferredPrompt;
+
+  
+
     window.addEventListener('beforeinstallprompt', (e) => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
@@ -47,6 +51,8 @@ class App extends Component {
         });
     });
   }
+
+  
 
   rememberRoom = () => {
     localStorage.clear();
@@ -91,7 +97,6 @@ class App extends Component {
 
   render() {
 
-    console.log('remember teat',this.state.remember)
 
     return (
       <div className="App">
@@ -111,7 +116,6 @@ class App extends Component {
           }}/>
 
         </Switch>
-      
       </div>
     );
   }

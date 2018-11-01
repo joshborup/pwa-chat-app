@@ -14,7 +14,8 @@ const myLib = new lib;
 io.sockets.on('connection', (socket) => {
 
     socket.on('join', (join) => {
-        let joined = myLib.addUser(join)
+
+        let joined = myLib.addUser(join, socket.id, myLib.users)
         console.log(joined)
         socket.join(joined.room)
         io.in(joined.room).emit("joined", {room: joined.room, id: joined.id, username: joined.username, userList: joined.userList})
@@ -30,13 +31,12 @@ io.sockets.on('connection', (socket) => {
         }
     })
     socket.on('userlist-cleanup', (user) => {
-        
-        io.in(user.room).emit('userlist', myLib.userListCleanup(user))
+        console.log('myLib.tempUserList',myLib.tempUserList)
+        io.in(user.room).emit('userlist', myLib.userListCleanup(myLib.users, user, myLib.tempUserList))
     })
 
     socket.on('left', (leave) => {
-        let left = myLib.removeUser(leave);
-        console.log('after left',left.userList);
+        let left = myLib.removeUser(leave, myLib.users);
         io.in(left.room).emit('userlist', left.userList)
         
     })
