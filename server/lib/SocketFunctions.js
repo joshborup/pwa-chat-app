@@ -4,14 +4,6 @@ module.exports = class {
     constructor(){
         this.users = [];
         this.tempUserList = []
-        this.cleaner = setInterval(() => {
-
-            let newList = _.uniqBy(this.tempUserList, 'id')
-            newList.sort(user => user.username)
-
-            this.users = newList
-            this.tempUserList = [];
-        }, 4000);   
         this.addUser = this.addUser.bind(this);
         this.removeUser = this.removeUser.bind(this);
     }
@@ -40,6 +32,7 @@ module.exports = class {
     }
     userListCleanup(myUserList, checkingInUser, tempUserList){
         tempUserList.push(checkingInUser);
+        tempUserList =  _.uniqBy(this.tempUserList, 'id');
         return myUserList
     }
     removeUser(left, myUserList){

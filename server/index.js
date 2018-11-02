@@ -4,6 +4,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
 const lib = require('./lib/SocketFunctions');
+const _ = require('lodash');
 
 app.use(bodyParser.json());
 
@@ -11,15 +12,21 @@ app.use( express.static( `${__dirname}/../build` ) );
 
 const myLib = new lib;
 
+setInterval(() => {
+    let newList = _.uniqBy(myLib.tempUserList, 'id')
+    newList.sort(user => user.username)
+    console.log(newList)
+    myLib.users = newList
+    myLib.tempUserList = [];
+}, 4000);
+
 io.sockets.on('connection', (socket) => {
 
     socket.on('join', (join) => {
 
         let joined = myLib.addUser(join, socket.id, myLib.users)
-        console.log(joined)
         socket.join(joined.room)
         io.in(joined.room).emit("joined", {room: joined.room, id: joined.id, username: joined.username, userList: joined.userList})
-        console.log('after join',joined.userList);
         io.to(socket.id).emit('user_id', joined.id);
         io.in(joined.room).emit('userlist', joined.userList);
     })
@@ -31,17 +38,19 @@ io.sockets.on('connection', (socket) => {
         }
     })
     socket.on('userlist-cleanup', (user) => {
-        console.log('myLib.tempUserList',myLib.tempUserList)
+
         io.in(user.room).emit('userlist', myLib.userListCleanup(myLib.users, user, myLib.tempUserList))
+
     })
 
     socket.on('left', (leave) => {
         let left = myLib.removeUser(leave, myLib.users);
         io.in(left.room).emit('userlist', left.userList)
-        
+        console.log(myLib.tempUserList)
     })
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (mySocket) => {
+        console.log(mySocket)
         console.log('user disconnected');
     });
 })
