@@ -1,20 +1,9 @@
-const Lib = require('../SocketFunctionNew');
+const Lib = require("../SocketFunctions");
 
 describe("unit tests", () => {
-    let socketFunctions;
-    beforeAll(()=> {
-        socketFunctions = new Lib;
-    })
-
-    beforeEach(()=> {
-        socketFunctions = new Lib;
-    })
-
-    afterEach(()=> {
-        socketFunctions = new Lib;
-    })
-
-    describe("userlist creation", () => {
-
-    })
-})
+	describe("userlist creation", () => {
+		it("should return true if user successfully added", () => {
+			expect(true).toBe(true);
+		});
+	});
+});

@@ -10,20 +10,16 @@ class ChatContainer extends Component {
     constructor(props){
         super(props)
         this.state = {
-            room: '',
             toggle: false,
             username: this.props.username,
             userList: [],
             message: '',
             messages: [],
-            id:null
         }
         socket.emit('join', {username: props.username, room: this.props.room.toLowerCase() || props.location.pathname.replace(/\//ig,'').toLowerCase()})
 
         socket.on('user_id', (id) => {
-            this.setState({
-                id: id
-            })
+            this.props.getId(id)
         })
 
         socket.on('joined', (joined) => {
@@ -49,32 +45,29 @@ class ChatContainer extends Component {
     componentDidMount(){
             this.countdown = setInterval(this.reconnect, 10000);
             this.cleanup = setInterval(this.userListCleanup, 1000);
-    //     window.onbeforeunload = function(event)
-    // {
-    //     return confirm("Confirm refresh");
-    // };
+
         window.addEventListener("beforeunload", (event) => {
             socket = socketIOClient();
-            socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
+            socket.emit('left', {room: this.state.room, username: this.state.username, id: this.props.id})
         });
     }
 
     componentWillUnmount(){
         clearInterval(this.countdown);
         clearInterval(this.cleanup)
-        socket.emit('left', {room: this.state.room, username: this.state.username, id: this.state.id})
+        socket.emit('left', {room: this.state.room, username: this.state.username, id: this.props.id})
     }
 
 
     userListCleanup = () => {
-        socket.emit('userlist-cleanup', {username: this.props.username, id: this.state.id, room: this.props.room.toLowerCase() || this.props.location.pathname.replace(/\//ig,'').toLowerCase()})        
+        socket.emit('userlist-cleanup', {username: this.props.username, id: this.props.id, room: this.props.room.toLowerCase()})        
     }
 
     reconnect = () => {
         if(socket.disconnected){
             const reconnect = window.confirm("You have been disconnected, would you like to reconnect?");
             if(reconnect){
-                socket.emit('join', {username: this.props.username, id: this.state.id, room: this.props.room.toLowerCase() || this.props.location.pathname.replace(/\//ig,'').toLowerCase()})
+                socket.emit('join', {username: this.props.username, id: this.props.id, room: this.props.room.toLowerCase()})
             }else{
                 this.props.history.push('/')
             }
@@ -98,7 +91,7 @@ class ChatContainer extends Component {
     sendMessage = () => {
         if(this.state.message){
             this.setState(() => {
-                socket.emit('message', {id: this.state.id, room: this.state.room, username: this.state.username, message: this.state.message})
+                socket.emit('message', {id: this.props.id, room: this.state.room, username: this.state.username, message: this.state.message})
                 return {
                     message: ''
                 }
@@ -120,7 +113,6 @@ class ChatContainer extends Component {
         return (
             <div className='chat-container'>
                 <div>
-                    {/* <button className='hamburger' onClick={this.mobileToggle}>{this.state.toggle ? <span>-</span>: <span>+</span>}</button> */}
                     <div onClick={this.toggleFunc} className={this.state.toggle ? 'toggle' : 'toggle showham'}>
                         <div className={this.state.toggle ? 'closes' : 'opens'}>
                             <span className={this.state.toggle ? 'bar close one' : 'bar open one'}></span>
@@ -129,9 +121,7 @@ class ChatContainer extends Component {
                         </div>
                     </div>
                     <SideBar toggleFullScreen={this.props.toggleFullScreen} toggle={this.state.toggle} mobileToggle={this.mobileToggle} {...this.props} {...this.state} />
-                    
                     <ChatRoom changeHandler={this.changeHandler} sendMessage={this.sendMessage} {...this.state} {...this.props} />
-            
                 </div>
             </div>  
         );

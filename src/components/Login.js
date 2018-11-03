@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import logo from "./logo.png"
 
-export default class Login extends PureComponent {
+export default class Login extends Component {
     constructor(){
         super()
         this.state = {

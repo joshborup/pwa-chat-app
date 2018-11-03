@@ -1,64 +1,61 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-const bodyParser = require('body-parser');
-const lib = require('./lib/SocketFunctions');
-const _ = require('lodash');
+const server = require("http").createServer(app);
+const Lib = require("./lib/SocketFunctions");
+const io = require("socket.io")(server);
+const bodyParser = require("body-parser");
+const _ = require("lodash");
 
 app.use(bodyParser.json());
 
-app.use( express.static( `${__dirname}/../build` ) );
+app.use(express.static(`${__dirname}/../build`));
 
-const myLib = new lib;
+let userList = [];
 
-setInterval(() => {
-    let newList = _.uniqBy(myLib.tempUserList, 'id')
-    newList.sort(user => user.username)
-    console.log(newList)
-    myLib.users = newList
-    myLib.tempUserList = [];
-}, 4000);
+io.sockets.on("connection", (socket) => {
+	let addedToList = false;
 
-io.sockets.on('connection', (socket) => {
+	socket.on("join", (join) => {
+		if (addedToList) return;
+		addedToList = Lib.addToUserList(io, socket, userList, join);
+	});
 
-    socket.on('join', (join) => {
+	socket.on("message", (message) => {
+		Lib.sendMessage(io, message);
+	});
+	socket.on("userlist-cleanup", (checkingInUser) => {
+		Lib.userListCleanup(io, userList, checkingInUser);
+	});
 
-        let joined = myLib.addUser(join, socket.id, myLib.users)
-        socket.join(joined.room)
-        io.in(joined.room).emit("joined", {room: joined.room, id: joined.id, username: joined.username, userList: joined.userList})
-        io.to(socket.id).emit('user_id', joined.id);
-        io.in(joined.room).emit('userlist', joined.userList);
-    })
+	socket.on("left", (leave) => {
+		socket.leave(leave.room);
+		userList = userList.filter((user) => {
+			return user !== socket.user;
+		});
 
-    socket.on('message', (message) => {
-        if(message.message){
-            myLib.sendMessage(message)
-            io.in(message.room).emit('message', message)
-        }
-    })
-    socket.on('userlist-cleanup', (user) => {
+		let roomList = userList.filter((user) => {
+			return user.room === leave.room;
+		});
 
-        io.in(user.room).emit('userlist', myLib.userListCleanup(myLib.users, user, myLib.tempUserList))
+		io.in(leave.room).emit("userlist", roomList);
+		addedToList = false;
+	});
 
-    })
+	socket.on("disconnect", () => {
+		// let user = socket.user ? socket.user : ""
 
-    socket.on('left', (leave) => {
-        let left = myLib.removeUser(leave, myLib.users);
-        io.in(left.room).emit('userlist', left.userList)
-        console.log(myLib.tempUserList)
-    })
+		userList = userList.filter((user) => {
+			if (user.id !== socket.id) {
+				return user;
+			}
+		});
+	});
+});
 
-    socket.on('disconnect', (mySocket) => {
-        console.log(mySocket)
-        console.log('user disconnected');
-    });
-})
-
-const path = require('path')
-app.get('*', (req, res)=>{
-    res.sendFile(path.join(__dirname, '../build/index.html'));
-})
+const path = require("path");
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "../build/index.html"));
+});
 
 const PORT = 4001;
-server.listen(PORT, ()=> console.log(`Server listening on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

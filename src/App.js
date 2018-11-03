@@ -11,8 +11,8 @@ class App extends Component {
     this.state = {
       userNameSelection: '',
       username: '',
-      room: '',
-      savedRoom: null
+      savedRoom: null,
+      id:null
     }
 
   }
@@ -20,7 +20,7 @@ class App extends Component {
 
   componentDidMount(){
 
-    let savedRoom = JSON.parse(localStorage.getItem('room')) || this.state.room;
+    let savedRoom = JSON.parse(localStorage.getItem('room')) || this.props.room;
     if(savedRoom){
       this.setState({
         room: savedRoom.room,
@@ -52,7 +52,11 @@ class App extends Component {
     });
   }
 
-  
+  getId = (id) => {
+    this.setState({
+      id: id
+    })
+  }
 
   rememberRoom = () => {
     localStorage.clear();
@@ -97,7 +101,7 @@ class App extends Component {
 
   render() {
 
-
+    console.log(this.state.room);
     return (
       <div className="App">
         <header className="App-header">
@@ -105,7 +109,7 @@ class App extends Component {
         </header>
         <Switch>
           <Route path="/chat-room" render={() => {
-            return this.state.username ? <ChatContainer toggleFullScreen={this.toggleFullScreen} room={this.state.room} username={this.state.username} /> : <Redirect to="/" />;
+            return this.state.username ? <ChatContainer id={this.state.id} getId={this.getId} toggleFullScreen={this.toggleFullScreen} room={this.state.room} username={this.state.username} /> : <Redirect to="/" />;
           }} />
           <Route exact path="/" render={() => {
             return <Login clearStateRemember={this.clearStateRemember} remember={this.state.remember} rememberRoom={this.rememberRoom} room={this.state.room} submitUsername={this.submitUsername} username={this.state.userNameSelection} universalChangeHandler={this.universalChangeHandler} />

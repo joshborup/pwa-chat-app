@@ -1,53 +1,39 @@
-const _ = require('lodash');
+module.exports = {
+	addToUserList(io, socket, userList, joiningUser) {
+		socket.user = joiningUser;
+		socket.user.id = socket.id;
+		socket.join(joiningUser.room);
+		userList.push(socket.user);
 
-module.exports = class {
-    constructor(){
-        this.users = [];
-        this.tempUserList = []
-        this.addUser = this.addUser.bind(this);
-        this.removeUser = this.removeUser.bind(this);
-    }
+		let roomList = userList.filter((user) => {
+			return user.room === joiningUser.room;
+		});
 
-    addUser(join, socketId, myUserList){
-        if(join.id){
-            myUserList = myUserList.filter(( user ) => {
-                return user.id !== join.id;
-            })
-            myUserList.push({room: join.room, id: join.id, username: join.username})
-            let userList = myUserList.filter(( user ) => {
-                return user.room == join.room
-            }) 
-            join.userList = userList
-            return join
-            
-        } else {
-            myUserList.push({room: join.room, id: socketId, username: join.username})
-            let userList = myUserList.filter((user)=>{
-                return user.room == join.room
-            })
-            join.id = socketId 
-            join.userList = userList
-            return join
-        }
-    }
-    userListCleanup(myUserList, checkingInUser, tempUserList){
-        tempUserList.push(checkingInUser);
-        tempUserList =  _.uniqBy(this.tempUserList, 'id');
-        return myUserList
-    }
-    removeUser(left, myUserList){
-        myUserList = myUserList.filter(user => {
-            return user.id !== left.id
-        })
-        
-        let userList = myUserList.filter((user)=>{
-            return user.room === left.room
-        })
-        left.userList = userList;
-        return left
-    }
-    sendMessage(message){
-        message.timestamp = new Date();
-        return message
-    }
-}
+		io.to(socket.id).emit("user_id", socket.id);
+
+		io.in(joiningUser.room).emit("joined", {
+			room: socket.user.room,
+			id: socket.user.id,
+			username: socket.user.username,
+			userList: roomList
+		});
+
+		if (userList.includes(socket.user)) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	sendMessage(io, message) {
+		if (message.message) {
+			message.timestamp = new Date();
+			io.in(message.room).emit("message", message);
+		}
+	},
+	userListCleanup(io, userList, checkingInUser) {
+		let roomList = userList.filter((user) => {
+			return user.room === checkingInUser.room;
+		});
+		io.in(checkingInUser.room).emit("userlist", roomList);
+	}
+};
