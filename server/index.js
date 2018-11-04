@@ -21,10 +21,14 @@ io.sockets.on("connection", (socket) => {
 	});
 
 	socket.on("message", (message) => {
-		Lib.sendMessage(io, message);
+		io.in(message.room).emit("message", Lib.sendMessage(message));
 	});
+
 	socket.on("userlist-cleanup", (checkingInUser) => {
-		Lib.userListCleanup(io, userList, checkingInUser);
+		io.in(checkingInUser.room).emit(
+			"userlist",
+			Lib.userListCleanup(userList, checkingInUser)
+		);
 	});
 
 	socket.on("left", (leave) => {

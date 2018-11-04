@@ -2,13 +2,13 @@ module.exports = {
 	addToUserList(io, socket, userList, joiningUser) {
 		socket.user = joiningUser;
 		socket.user.id = socket.id;
+
 		socket.join(joiningUser.room);
 		userList.push(socket.user);
 
 		let roomList = userList.filter((user) => {
 			return user.room === joiningUser.room;
 		});
-
 		io.to(socket.id).emit("user_id", socket.id);
 
 		io.in(joiningUser.room).emit("joined", {
@@ -24,16 +24,18 @@ module.exports = {
 			return false;
 		}
 	},
-	sendMessage(io, message) {
-		if (message.message) {
+	sendMessage(message) {
+		if (message.message || message.image) {
 			message.timestamp = new Date();
-			io.in(message.room).emit("message", message);
+			return message;
+		} else {
+			return "no message included";
 		}
 	},
-	userListCleanup(io, userList, checkingInUser) {
+	userListCleanup(userList, checkingInUser) {
 		let roomList = userList.filter((user) => {
 			return user.room === checkingInUser.room;
 		});
-		io.in(checkingInUser.room).emit("userlist", roomList);
+		return roomList;
 	}
 };
