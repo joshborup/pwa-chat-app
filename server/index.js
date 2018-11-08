@@ -11,12 +11,15 @@ app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/../build`));
 
 let userList = [];
+let onlineCount = 0;
+setInterval(() => console.log("online count" + onlineCount), 3000);
 
 io.sockets.on("connection", (socket) => {
 	let addedToList = false;
 
 	socket.on("join", (join) => {
 		if (addedToList) return;
+		onlineCount++;
 		addedToList = Lib.addToUserList(io, socket, userList, join);
 	});
 
@@ -36,6 +39,8 @@ io.sockets.on("connection", (socket) => {
 		userList = userList.filter((user) => {
 			return user !== socket.user;
 		});
+
+		onlineCount--;
 
 		let roomList = userList.filter((user) => {
 			return user.room === leave.room;
